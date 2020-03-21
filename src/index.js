@@ -7,6 +7,7 @@ import thunk from "redux-thunk";
 import decode from "jwt-decode";
 import { composeWithDevTools } from "redux-devtools-extension";
 import rootReducer from "./rootReducer";
+import { userLoggedIn } from "./actions/auth";
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import "semantic-ui-css/semantic.min.css";
@@ -15,6 +16,13 @@ const store = createStore(
     rootReducer,
     composeWithDevTools(applyMiddleware(thunk))
   );
+
+  if (localStorage.bookwormJWT) {
+    const user = {
+      token: localStorage.bookwormJWT
+    };
+    store.dispatch(userLoggedIn(user));
+  }
 
   ReactDOM.render(
     <BrowserRouter>
